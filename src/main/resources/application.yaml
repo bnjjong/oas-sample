@@ -1,0 +1,16 @@
+application:
+  id: io-df-henry-oas-sample-api
+  version: 1.0
+
+spring:
+  application:
+    name: io-df-henry-oas-sample-api
+  profiles:
+    active: local
+
+logging:
+  level:
+    root: DEBUG
+
+server:
+  port: 8080
