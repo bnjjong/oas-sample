@@ -22,16 +22,39 @@
  * SOFTWARE.
  */
 
-package io.df.henry.oas.sample.service;
+package io.df.henry.oas.sample.dto;
 
-import io.df.henry.oas.sample.dto.MemberDto;
-import io.df.henry.oas.sample.dto.MemberInsertionDto;
-import io.df.henry.oas.sample.dto.MemberModificationDto;
+import jakarta.validation.constraints.NotBlank;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
-public interface MemberService {
-  MemberDto findById(Long memberId);
+@Getter
+@ToString
+@NoArgsConstructor(access = AccessLevel.PACKAGE)
+public class MemberModificationDto {
 
-  Long save(MemberInsertionDto dto);
+  /**
+   * 멤버 ID.
+   */
+  @NotBlank
+  private Long id;
+  /**
+   * 이름.
+   */
+  @NotBlank
+  private String name;
 
-  MemberDto modify(MemberModificationDto dto);
+  /**
+   * 휴대폰 번호.
+   */
+  @NotBlank
+  private String phoneNumber;
+
+  public MemberModificationDto(Long id, String name, String phoneNumber) {
+    this.id = id;
+    this.name = name;
+    this.phoneNumber = phoneNumber;
+  }
 }

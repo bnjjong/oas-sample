@@ -11,3 +11,13 @@ Content-Type: application/json
 ### get member
 GET http://localhost:8080/member/1
 Content-Type: application/json
+
+### modify member
+PUT http://localhost:8080/member
+Content-Type: application/json
+
+{
+  "id": 1,
+  "name": "Henry Park",
+  "phoneNumber": "010-111-9999"
+}

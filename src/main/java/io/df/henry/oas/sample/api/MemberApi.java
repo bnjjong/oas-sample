@@ -27,6 +27,7 @@ package io.df.henry.oas.sample.api;
 
 import io.df.henry.oas.sample.dto.MemberDto;
 import io.df.henry.oas.sample.dto.MemberInsertionDto;
+import io.df.henry.oas.sample.dto.MemberModificationDto;
 import io.df.henry.oas.sample.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,6 +36,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -55,5 +57,10 @@ public class MemberApi {
   public ResponseEntity<Long> saveMember(@RequestBody MemberInsertionDto dto) {
     Long memberId = service.save(dto);
     return new ResponseEntity<>(memberId, HttpStatus.OK);
+  }
+
+  @PutMapping("")
+  public ResponseEntity<MemberDto> modifyMember(@RequestBody MemberModificationDto dto) {
+    return new ResponseEntity<>(service.modify(dto), HttpStatus.OK);
   }
 }

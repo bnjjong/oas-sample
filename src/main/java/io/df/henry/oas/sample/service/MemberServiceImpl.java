@@ -26,12 +26,12 @@ package io.df.henry.oas.sample.service;
 
 import io.df.henry.oas.sample.dto.MemberDto;
 import io.df.henry.oas.sample.dto.MemberInsertionDto;
+import io.df.henry.oas.sample.dto.MemberModificationDto;
 import io.df.henry.oas.sample.model.Member;
 import io.df.henry.oas.sample.repository.MemberRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -44,9 +44,12 @@ public class MemberServiceImpl implements MemberService {
 
   @Override
   public MemberDto findById(Long memberId) {
-    Member member = repository.findById(memberId).orElseThrow(
-        () -> new EntityNotFoundException("member is not exists."));
+    Member member = getMember(memberId);
 
+    return convertMemberDto(member);
+  }
+
+  private static MemberDto convertMemberDto(Member member) {
     return new MemberDto(
         member.getId(),
         member.getEmail(),
@@ -54,6 +57,12 @@ public class MemberServiceImpl implements MemberService {
         member.getPhoneNumber(),
         member.getCreatedAt()
     );
+  }
+
+  private Member getMember(Long memberId) {
+    Member member = repository.findById(memberId).orElseThrow(
+        () -> new EntityNotFoundException("member is not exists."));
+    return member;
   }
 
   @Transactional
@@ -65,5 +74,15 @@ public class MemberServiceImpl implements MemberService {
         dto.getPhoneNumber()
     );
     return repository.save(member).getId();
+  }
+
+  @Transactional
+  @Override
+  public MemberDto modify(MemberModificationDto dto) {
+    Member member = getMember(dto.getId());
+    member.update(dto.getName(),
+        dto.getPhoneNumber()
+    );
+    return convertMemberDto(member);
   }
 }

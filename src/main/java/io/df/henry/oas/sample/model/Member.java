@@ -67,6 +67,11 @@ public class Member {
     this.name = name;
     this.phoneNumber = phoneNumber;
   }
+
+  public void update(String name, String phoneNumber) {
+    this.name = name;
+    this.phoneNumber = phoneNumber;
+  }
 }
 
 
