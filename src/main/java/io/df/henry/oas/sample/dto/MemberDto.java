@@ -22,20 +22,61 @@
  * SOFTWARE.
  */
 
-package io.df.henry.oas.sample.service;
+package io.df.henry.oas.sample.dto;
 
-import io.df.henry.oas.sample.dto.UserDto;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import io.df.henry.oas.sample.model.Member;
+import jakarta.validation.constraints.NotBlank;
+import java.io.Serializable;
+import java.time.LocalDateTime;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
-@Service
-@Slf4j
-@RequiredArgsConstructor
-public class UserServiceImpl implements UserService {
+/** DTO for {@link Member} */
+@Getter
+@ToString
+@NoArgsConstructor(access = AccessLevel.PACKAGE)
+public class MemberDto implements Serializable {
 
-  @Override
-  public UserDto findByUserId(String userId) {
-    return null;
+  /**
+   * 멤버 ID.
+   */
+  @NotBlank
+  private Long id;
+
+  /**
+   * 이메일
+   */
+  @NotBlank
+  private String email;
+
+  /**
+   * 이름.
+   */
+  @NotBlank
+  private String name;
+
+  /**
+   * 휴대폰 번호.
+   */
+  @NotBlank
+  private String phoneNumber;
+
+  /**
+   * 생성 시간.
+   */
+  @NotBlank
+  @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+  private LocalDateTime createdAt;
+
+  public MemberDto(Long id, String email, String name, String phoneNumber,
+      LocalDateTime createdAt) {
+    this.id = id;
+    this.email = email;
+    this.name = name;
+    this.phoneNumber = phoneNumber;
+    this.createdAt = createdAt;
   }
 }

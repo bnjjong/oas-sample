@@ -22,23 +22,13 @@
  * SOFTWARE.
  */
 
-CREATE TABLE member
-(
-    `id`           BIGINT       NOT NULL AUTO_INCREMENT COMMENT '아이디',
-    `email`        VARCHAR(100) NOT NULL COMMENT '이메일',
-    `name`         VARCHAR(100) NOT NULL COMMENT '이름',
-    `phone_number` VARCHAR(30)  NOT NULL COMMENT '연락처 넘버',
-    `created_at`   DATETIME(6)  NULL COMMENT '생성 일자',
-    PRIMARY KEY (id)
-);
+package io.df.henry.oas.sample.service;
 
--- 테이블 Comment 설정 SQL - admin
-ALTER TABLE member
-    COMMENT '사용자 정보';
+import io.df.henry.oas.sample.dto.MemberDto;
+import io.df.henry.oas.sample.dto.MemberInsertionDto;
 
--- Unique Index 설정
-CREATE UNIQUE INDEX `UIX-user-1`
-    ON member (email);
+public interface MemberService {
+  MemberDto findById(Long memberId);
 
-CREATE UNIQUE INDEX `UIX-user-2`
-    ON member (phone_number);
+  Long save(MemberInsertionDto dto);
+}

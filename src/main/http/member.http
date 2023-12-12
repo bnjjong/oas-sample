@@ -1,0 +1,13 @@
+### save
+POST http://localhost:8080/member
+Content-Type: application/json
+
+{
+  "email": "henry@test.com",
+  "name": "Henry Han",
+  "phoneNumber": "010-2222-3333"
+}
+
+### get member
+GET http://localhost:8080/member/1
+Content-Type: application/json

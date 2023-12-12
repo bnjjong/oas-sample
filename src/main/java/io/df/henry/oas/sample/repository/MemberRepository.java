@@ -22,16 +22,11 @@
  * SOFTWARE.
  */
 
-package io.df.henry.oas.sample.dto;
+package io.df.henry.oas.sample.repository;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import io.df.henry.oas.sample.model.Member;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-@Getter
-@ToString
-@NoArgsConstructor(access = AccessLevel.PACKAGE)
-public class UserDto {
+public interface MemberRepository extends JpaRepository<Member, Long> {
 
 }

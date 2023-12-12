@@ -22,10 +22,47 @@
  * SOFTWARE.
  */
 
-package io.df.henry.oas.sample.service;
+package io.df.henry.oas.sample.dto;
 
-import io.df.henry.oas.sample.dto.UserDto;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import io.df.henry.oas.sample.model.Member;
+import jakarta.validation.constraints.NotBlank;
+import java.io.Serializable;
+import java.time.LocalDateTime;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
-public interface UserService {
-  UserDto findByUserId(String userId);
+/** DTO for {@link Member} */
+@Getter
+@ToString
+@NoArgsConstructor(access = AccessLevel.PACKAGE)
+public class MemberInsertionDto implements Serializable {
+
+
+  /**
+   * 이메일
+   */
+  @NotBlank
+  private String email;
+
+  /**
+   * 이름.
+   */
+  @NotBlank
+  private String name;
+
+  /**
+   * 휴대폰 번호.
+   */
+  @NotBlank
+  private String phoneNumber;
+
+
+  public MemberInsertionDto(String email, String name, String phoneNumber) {
+    this.email = email;
+    this.name = name;
+    this.phoneNumber = phoneNumber;
+  }
 }

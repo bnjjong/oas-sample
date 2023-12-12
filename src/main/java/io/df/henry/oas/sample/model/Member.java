@@ -30,17 +30,43 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import java.time.LocalDateTime;
+import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+import org.hibernate.annotations.CreationTimestamp;
 
-@Getter
-@Setter
+@Table(name = "member")
 @Entity
-@Table(name = "user")
-public class User {
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@ToString(callSuper = true)
+public class Member {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id", nullable = false)
   private Long id;
+
+  @Column(name = "email", nullable = false, length = 100)
+  private String email;
+
+  @Column(name = "name", nullable = false, length = 100)
+  private String name;
+
+  @Column(name = "phone_number", nullable = false, length = 30)
+  private String phoneNumber;
+
+  @CreationTimestamp
+  @Column(nullable = false, updatable = false)
+  private LocalDateTime createdAt;
+
+  public Member(String email, String name, String phoneNumber) {
+    this.email = email;
+    this.name = name;
+    this.phoneNumber = phoneNumber;
+  }
 }
+
+
