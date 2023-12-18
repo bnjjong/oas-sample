@@ -8,8 +8,13 @@ Content-Type: application/json
   "phoneNumber": "010-2222-3333"
 }
 
+> {% //response handler
+  client.global.set("memberId", response.body); // (1)
+  client.log("memberId : " + client.global.get("memberId")); // (2)
+%}
+
 ### get member
-GET http://localhost:8080/member/1
+GET http://localhost:8080/member/{{memberId}}
 Content-Type: application/json
 
 ### modify member
@@ -17,7 +22,12 @@ PUT http://localhost:8080/member
 Content-Type: application/json
 
 {
-  "id": 1,
+  "id": {{memberId}},
   "name": "Henry Park",
   "phoneNumber": "010-111-9999"
 }
+
+
+### delete member
+DELETE http://localhost:8080/member/{{memberId}}
+Content-Type: application/json

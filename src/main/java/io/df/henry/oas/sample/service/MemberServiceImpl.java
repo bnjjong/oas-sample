@@ -85,4 +85,10 @@ public class MemberServiceImpl implements MemberService {
     );
     return convertMemberDto(member);
   }
+
+  @Transactional
+  @Override
+  public void delete(Long memberId) {
+    repository.deleteById(memberId);
+  }
 }

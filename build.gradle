@@ -3,7 +3,8 @@ plugins {
     id 'org.springframework.boot' version '3.2.0'
     id 'io.spring.dependency-management' version '1.1.4'
     id 'org.graalvm.buildtools.native' version '0.9.28'
-    id 'org.asciidoctor.jvm.convert' version '3.3.2'
+    id 'org.asciidoctor.jvm.convert' version '4.0.0-alpha.1'
+    id 'com.epages.restdocs-api-spec' version '0.18.2'
 }
 
 group = 'df.henry'
@@ -17,6 +18,8 @@ configurations {
     compileOnly {
         extendsFrom annotationProcessor
     }
+    asciidoctorExtensions
+    jsondoclet
 }
 
 repositories {
@@ -25,6 +28,7 @@ repositories {
 
 ext {
     set('snippetsDir', file("build/generated-snippets"))
+    set('javadocJsonDir', file("build/generated-javadoc-json"))
 }
 
 dependencies {
@@ -44,12 +48,22 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
+    // auto restdoc
+    testImplementation 'capital.scalable:spring-auto-restdocs-core:2.0.11'
+    jsondoclet 'capital.scalable:spring-auto-restdocs-json-doclet-jdk9:2.0.11'
     testImplementation 'com.h2database:h2'
 
+    // https://mvnrepository.com/artifact/com.epages/restdocs-api-spec-mockmvc
+    testImplementation 'com.epages:restdocs-api-spec-mockmvc:0.19.0'
 
 }
 
 tasks.named('test') {
+    systemProperty 'org.springframework.restdocs.outputDir', snippetsDir
+    systemProperty 'org.springframework.restdocs.javadocJsonDir', javadocJsonDir
+
+    dependsOn jsonDoclet
+
     outputs.dir snippetsDir
     useJUnitPlatform()
 }
@@ -57,4 +71,33 @@ tasks.named('test') {
 tasks.named('asciidoctor') {
     inputs.dir snippetsDir
     dependsOn test
+}
+
+// Java Source 코드에서 Javadoc 을 읽고, json 파일로 반환
+task jsonDoclet(type: Javadoc, dependsOn: compileJava) {
+    source = sourceSets.main.allJava
+    classpath = sourceSets.main.compileClasspath
+    destinationDir = javadocJsonDir
+    options.docletpath = configurations.jsondoclet.files.asType(List)
+    options.doclet = 'capital.scalable.restdocs.jsondoclet.ExtractDocumentationAsJsonDoclet'
+    options.memberLevel = JavadocMemberLevel.PACKAGE
+}
+
+
+asciidoctor {
+    inputs.dir snippetsDir
+    dependsOn test
+}
+
+openapi3 {
+    server = 'https://localhost:8080'
+    title = 'oas-sample-api'
+    description = 'oas sample api for testing.'
+//    tagDescriptionsPropertiesFile = 'src/docs/tag-descriptions.yaml'
+    version = '0.1.0'
+    format = 'yaml'
+}
+
+bootJar {
+    dependsOn asciidoctor
 }

@@ -22,18 +22,19 @@
  * SOFTWARE.
  */
 
-package io.df.henry.oas.sample.service;
+package io.df.henry.oas.sample.model.fixture;
 
 import io.df.henry.oas.sample.dto.MemberDto;
-import io.df.henry.oas.sample.dto.MemberInsertionDto;
-import io.df.henry.oas.sample.dto.MemberModificationDto;
+import java.time.LocalDateTime;
 
-public interface MemberService {
-  MemberDto findById(Long memberId);
+public class MemberFixture {
 
-  Long save(MemberInsertionDto dto);
-
-  MemberDto modify(MemberModificationDto dto);
-
-  void delete(Long memberId);
+  public static MemberDto henryDto() {
+    return new MemberDto(1L,
+        "henry@test.com",
+        "Henry Han",
+        "010-1111-2222",
+        LocalDateTime.now()
+        );
+  }
 }

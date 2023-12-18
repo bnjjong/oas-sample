@@ -33,6 +33,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -48,19 +49,31 @@ import org.springframework.web.bind.annotation.RestController;
 public class MemberApi {
   private final MemberService service;
 
+  /**
+   * 회원 정보를 조회 한다.
+   *
+   * @param memberId 멤버 ID.
+   * @return {@code ResponseEntity} with member info.
+   */
   @GetMapping("/{memberId}")
   public ResponseEntity<MemberDto> findById(@PathVariable("memberId") Long memberId) {
     return new ResponseEntity<>(service.findById(memberId), HttpStatus.OK);
   }
 
   @PostMapping("")
-  public ResponseEntity<Long> saveMember(@RequestBody MemberInsertionDto dto) {
+  public ResponseEntity<Long> save(@RequestBody MemberInsertionDto dto) {
     Long memberId = service.save(dto);
     return new ResponseEntity<>(memberId, HttpStatus.OK);
   }
 
   @PutMapping("")
-  public ResponseEntity<MemberDto> modifyMember(@RequestBody MemberModificationDto dto) {
+  public ResponseEntity<MemberDto> modify(@RequestBody MemberModificationDto dto) {
     return new ResponseEntity<>(service.modify(dto), HttpStatus.OK);
+  }
+
+  @DeleteMapping("/{memberId}")
+  public ResponseEntity<Boolean> deleeteById(@PathVariable("memberId") Long memberId) {
+    service.delete(memberId);
+    return new ResponseEntity<>(HttpStatus.OK);
   }
 }
